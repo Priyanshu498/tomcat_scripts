@@ -49,52 +49,15 @@ To implement canary deployment, you need to have the capability to route a porti
 | **Resource Requirements** | Need resources to support running multiple versions.                        |
 | **Monitoring Overhead**   | Requires robust monitoring and analysis tools.                              |
 ## Flow chart
-
-+------------------+
-| Develop Infra    |
-| Code             |
-+------------------+
-         |
-         v
-+------------------+
-| Build Artifacts  |
-| (AMIs/Images)    |
-+------------------+
-         |
-         v
-+------------------+
-| Test in Staging  |
-+------------------+
-         |
-         v
-+------------------+
-| Canary Deploy to |
-| Small Subset     |
-+------------------+
-         |
-         v
-+------------------+
-| Monitor Metrics  |
-+------------------+
-         |
-         v
-+------------------+
-| Validate Results |
-+------------------+
-   |       |
-   | Success|
-   v        |
-+------------------+     Rollback
-| Gradual Rollout  |<---------------+
-| (25% -> 50% ->   |
-| 100%)            |
-+------------------+
-         |
-         v
-+------------------+
-| Decommission Old |
-| Infra            |
-+------------------+
+graph TD
+    A[Develop Infrastructure Code] --> B[Build Artifacts (AMIs/Images)]
+    B --> C[Test in Staging Environment]
+    C --> D[Canary Deployment to Small Subset]
+    D --> E[Monitor Metrics]
+    E --> F[Validate Results]
+    F -- Success --> G[Gradual Rollout (25% -> 50% -> 100%)]
+    F -- Failure --> H[Rollback to Last Stable Infra]
+    G --> I[Decommission Old Infrastructure]
 ## Best Practices
 - **Automate Rollouts**: Use automation tools to manage the incremental rollout.
 - **Real-Time Monitoring**: Continuously monitor the performance and gather user feedback.
